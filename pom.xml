@@ -7,11 +7,23 @@
   <name>cfdi-base</name>
   <url>http://code.google.com/p/factura-electronica</url>
   
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
+<!--   <parent> -->
+<!--     <groupId>org.sonatype.oss</groupId> -->
+<!--     <artifactId>oss-parent</artifactId> -->
+<!--     <version>7</version> -->
+<!--   </parent> -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-facelend</id>
+            <name>RepositoryProxy</name>
+            <url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-facelend</id>
+            <name>RepositoryProxy</name>
+            <url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
+        </repository>
+    </distributionManagement>
 
   <issueManagement>
     <system>code.google.com</system>
