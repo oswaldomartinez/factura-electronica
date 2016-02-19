@@ -227,6 +227,10 @@ public final class CFDv32 implements CFDI {
                 schemas += " http://www.sat.gob.mx/nomina http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina11.xsd";
                 break;
             }
+            if (document.getComplemento().getAny().get(i) instanceof mx.bigdata.sat.common.aerolineas.schema.Aerolineas) {
+                schemas += " http://www.sat.gob.mx/aerolineas http://www.sat.gob.mx/sitio_internet/cfd/aerolineas/aerolineas.xsd";
+                break;
+            }
         }
     }
     m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, schemas);
