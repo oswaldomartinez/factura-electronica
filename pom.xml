@@ -619,9 +619,9 @@
             <configuration>
               <packageName>mx.bigdata.sat.common.ine.schema</packageName>
               <sources>
-                <source>src/main/resources/xsd/common/ine/ine10.xsd</source>
+                <source>src/main/resources/xsd/common/ine/ine11.xsd</source>
               </sources>
-              <outputDirectory>${project.build.directory}/generated-sources/xjc31</outputDirectory>          
+              <outputDirectory>${project.build.directory}/generated-sources/xjc32</outputDirectory>          
               <staleFile>${project.build.directory}/generated-sources/xjc31/.staleFlag</staleFile>
               <extension>true</extension>
             </configuration>
@@ -804,6 +804,7 @@
                     <source>${project.build.directory}/generated-sources/xjc3</source>
                     <source>${project.build.directory}/generated-sources/xjc30</source>
                     <source>${project.build.directory}/generated-sources/xjc31</source>
+                    <source>${project.build.directory}/generated-sources/xjc32</source>
                     <source>${project.build.directory}/generated-sources/xjc4</source>
                     <source>${project.build.directory}/generated-sources/xjc5</source>
                     <source>${project.build.directory}/generated-sources/xjc6</source>

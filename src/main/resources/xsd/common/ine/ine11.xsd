@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:ine="http://www.sat.gob.mx/ine" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sat.gob.mx/ine" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="INE">
 		<xs:annotation>
@@ -49,7 +49,7 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
-			<xs:attribute name="Version" use="required" fixed="1.0">
+			<xs:attribute name="Version" use="required" fixed="1.1">
 				<xs:annotation>
 					<xs:documentation>Atributo requerido que indica la versión del complemento.</xs:documentation>
 				</xs:annotation>
@@ -110,7 +110,8 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Ejecutivo Nacional"/>
 			<xs:enumeration value="Ejecutivo Estatal"/>
-		</xs:restriction>
+      <xs:enumeration value="Directivo Estatal"/>
+    </xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="t_Ambito">
 		<xs:annotation>

@@ -9,6 +9,7 @@
   <!-- Integración de complemento aerolineas 07-02-2014-->
   <!-- Integración de complemento notarios publicos 25-03-2014-->
   <!-- Integración de complemento vehiculo usado03-10-2014-->
+  <!-- Integración de complemento ine usado07-01-2016-->
 
   <!-- Con el siguiente método se establece que la salida deberá ser en texto -->
   <xsl:output method="text" version="1.0" encoding="UTF-8" indent="no"/>
@@ -46,6 +47,7 @@
   <xsl:include href="/xslt/cfd/certificadodedestruccion/certificadodedestruccion.xslt"/>
   <xsl:include href="/xslt/cfd/renovacionysustitucionvehiculos/renovacionysustitucionvehiculos.xslt"/>
   <xsl:include href="/xslt/cfd/obrasarteantiguedades/obrasarteantiguedades.xslt"/>
+  <xsl:include href="/xslt/cfd/ine/ine11.xslt"/>
 
   <!-- Aquí iniciamos el procesamiento de la cadena original con su | inicial y el terminador || -->
   <xsl:template match="/">|<xsl:apply-templates select="/cfdi:Comprobante"/>||</xsl:template>

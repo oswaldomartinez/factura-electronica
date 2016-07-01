@@ -91,6 +91,7 @@ public final class CFDv32 implements CFDI {
       "/xsd/common/consumodecombustibles/consumodecombustibles.xsd",
       "/xsd/common/valesdedespensa/valesdedespensa.xsd",
       "/xsd/common/aerolineas/aerolineas.xsd",
+      "/xsd/common/ine/ine11.xsd",
       "/xsd/common/notariospublicos/notariospublicos.xsd",
       "/xsd/common/vehiculousado/vehiculousado.xsd"
   };
@@ -229,6 +230,10 @@ public final class CFDv32 implements CFDI {
             }
             if (document.getComplemento().getAny().get(i) instanceof mx.bigdata.sat.common.aerolineas.schema.Aerolineas) {
                 schemas += " http://www.sat.gob.mx/aerolineas http://www.sat.gob.mx/sitio_internet/cfd/aerolineas/aerolineas.xsd";
+                break;
+            }
+            if (document.getComplemento().getAny().get(i) instanceof mx.bigdata.sat.common.ine.schema.INE) {
+                schemas += " http://www.sat.gob.mx/ine http://www.sat.gob.mx/sitio_internet/cfd/ine/ine11.xsd";
                 break;
             }
         }
