@@ -611,6 +611,21 @@
             </configuration>
           </execution>
           <execution>
+            <id>schema32-xjc</id>
+            <goals>
+              <goal>xjc</goal>
+            </goals>
+            <configuration>
+              <packageName>mx.bigdata.sat.common.ine.schema</packageName>
+              <sources>
+                <source>src/main/resources/xsd/common/ine/ine10.xsd</source>
+              </sources>
+              <outputDirectory>${project.build.directory}/generated-sources/xjc31</outputDirectory>          
+              <staleFile>${project.build.directory}/generated-sources/xjc31/.staleFlag</staleFile>
+              <extension>true</extension>
+            </configuration>
+          </execution>
+          <execution>
             <id>schema100-xjc</id>
             <goals>
               <goal>xjc</goal>
@@ -770,7 +785,7 @@
   								</goals>
   							</pluginExecutionFilter>
   							<action>
-  								<ignore />
+  								<execute />
   							</action>
   						</pluginExecution>
   					</pluginExecutions>
