@@ -19,11 +19,17 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
+
+import mx.bigdata.sat.cfdi.v33.schema.CClaveUnidad;
+import mx.bigdata.sat.cfdi.v33.schema.CFormaPago;
+import mx.bigdata.sat.cfdi.v33.schema.CImpuesto;
 import mx.bigdata.sat.cfdi.v33.schema.CMetodoPago;
 import mx.bigdata.sat.cfdi.v33.schema.CMoneda;
 import mx.bigdata.sat.cfdi.v33.schema.CPais;
+import mx.bigdata.sat.cfdi.v33.schema.CRegimenFiscal;
 import mx.bigdata.sat.cfdi.v33.schema.CTipoDeComprobante;
 import mx.bigdata.sat.cfdi.v33.schema.CTipoFactor;
+import mx.bigdata.sat.cfdi.v33.schema.CTipoRelacion;
 import mx.bigdata.sat.cfdi.v33.schema.CUsoCFDI;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante.CfdiRelacionados;
@@ -47,10 +53,10 @@ public final class ExampleCFDv33Factory {
         comp.setFolio("12345");
         comp.setFecha(DatatypeFactory.newInstance().newXMLGregorianCalendar(2017, 07, 1, 0, 0, 0, DatatypeConstants.FIELD_UNDEFINED, DatatypeConstants.FIELD_UNDEFINED));
 //        comp.setSello();
-        comp.setFormaPago("02");
+        comp.setFormaPago(CFormaPago.VALUE_2);
         comp.setNoCertificado("20001000000200001428");
 //        comp.setCertificado();
-        comp.setCondicionesDePago("Crédito a 20 días");
+        comp.setCondicionesDePago("CrÃ©dito a 20 dÃ­as");
         comp.setSubTotal(new BigDecimal("1550.00"));
         comp.setDescuento(new BigDecimal("100.00"));
         comp.setMoneda(CMoneda.MXN);
@@ -70,7 +76,7 @@ public final class ExampleCFDv33Factory {
 
     private static CfdiRelacionados createCfdiRelacionados(ObjectFactory of) {
         CfdiRelacionados cfdir = of.createComprobanteCfdiRelacionados();
-        cfdir.setTipoRelacion("06");
+        cfdir.setTipoRelacion(CTipoRelacion.VALUE_6);
         cfdir.getCfdiRelacionado().add(createCfdiRelacionado(of));
         return cfdir;
     }
@@ -85,7 +91,7 @@ public final class ExampleCFDv33Factory {
         Emisor emisor = of.createComprobanteEmisor();
         emisor.setNombre("PHARMA PLUS SA DE CV");
         emisor.setRfc("PPL961114GZ1");
-        emisor.setRegimenFiscal("601");
+        emisor.setRegimenFiscal(CRegimenFiscal.VALUE_1);
         return emisor;
     }
 
@@ -106,7 +112,7 @@ public final class ExampleCFDv33Factory {
         c1.setClaveProdServ("10101501");
         c1.setNoIdentificacion("GEN01");
         c1.setCantidad(new BigDecimal("1.0"));
-        c1.setClaveUnidad("EA");
+        c1.setClaveUnidad(CClaveUnidad.VALUE_731);
         c1.setUnidad("CAPSULAS");
         c1.setDescripcion("VIBRAMICINA 100MG 10");
         c1.setValorUnitario(new BigDecimal("775.00"));
@@ -119,7 +125,7 @@ public final class ExampleCFDv33Factory {
         c2.setClaveProdServ("10101501");
         c2.setNoIdentificacion("GEN02");
         c2.setCantidad(new BigDecimal("1.0"));
-        c2.setClaveUnidad("EA");
+        c2.setClaveUnidad(CClaveUnidad.VALUE_731);
         c2.setUnidad("BOTELLA");
         c2.setDescripcion("CLORUTO 500M");
         c2.setImporte(new BigDecimal("775.00"));
@@ -136,7 +142,7 @@ public final class ExampleCFDv33Factory {
         Concepto.Impuestos.Traslados trs = of.createComprobanteConceptosConceptoImpuestosTraslados();
         Concepto.Impuestos.Traslados.Traslado tr = of.createComprobanteConceptosConceptoImpuestosTrasladosTraslado();
         tr.setBase(new BigDecimal("0.16"));
-        tr.setImpuesto("002");
+        tr.setImpuesto(CImpuesto.VALUE_2);
         tr.setTipoFactor(CTipoFactor.TASA);
         tr.setTasaOCuota(new BigDecimal("0.160000"));
         tr.setImporte(new BigDecimal("124.00"));
@@ -168,7 +174,7 @@ public final class ExampleCFDv33Factory {
     private static Impuestos.Traslados createTraslados(ObjectFactory of) {
         Impuestos.Traslados its = of.createComprobanteImpuestosTraslados();
         Impuestos.Traslados.Traslado it = of.createComprobanteImpuestosTrasladosTraslado();
-        it.setImpuesto("002");
+        it.setImpuesto(CImpuesto.VALUE_2);
         it.setTipoFactor(CTipoFactor.TASA);
         it.setTasaOCuota(new BigDecimal("0.160000"));
         it.setImporte(new BigDecimal("248.00"));

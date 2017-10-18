@@ -12,7 +12,8 @@
 		la generación de las cadenas originales de los complementos fiscales 
 	-->
     <xsl:include href="/xslt/cfd/ecc/ecc11.xslt"/>
-    <xsl:include href="/xslt/cfd/donat/donat11.xslt"/>
+    <xsl:include href="/xslt/cfd/ecb/ecb.xslt"/>
+    <xsl:include href="/xslt/cfd/donat/v11/donat11.xslt"/>
     <xsl:include href="/xslt/cfd/divisas/divisas.xslt"/>
     <xsl:include href="/xslt/cfd/implocal/implocal.xslt"/>
     <xsl:include href="/xslt/cfd/leyendasFiscales/leyendasFisc.xslt"/>
@@ -31,7 +32,7 @@
     <xsl:include href="/xslt/cfd/certificadodedestruccion/certificadodedestruccion.xslt"/>
     <xsl:include href="/xslt/cfd/obrasarteantiguedades/obrasarteantiguedades.xslt"/>
     <xsl:include href="/xslt/cfd/ComercioExterior/ComercioExterior11.xslt"/>
-    <xsl:include href="/xslt/cfd/ine/INE11.xslt"/>
+    <xsl:include href="/xslt/cfd/ine/ine11.xslt"/>
     <xsl:include href="/xslt/cfd/iedu/iedu.xslt"/>
     <xsl:include href="/xslt/cfd/ventavehiculos/ventavehiculos11.xslt"/>
     <xsl:include href="/xslt/cfd/terceros/terceros.xslt"/>

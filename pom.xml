@@ -94,6 +94,11 @@
       <artifactId>jaxb-api</artifactId>
       <version>2.2.11</version>
     </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-core</artifactId>
+      <version>2.2.11</version>
+    </dependency>
   </dependencies>
   <build>
     <defaultGoal>install</defaultGoal>
@@ -102,8 +107,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.8</source>
+          <target>1.8</target>
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
@@ -161,7 +166,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>schema4-xjc</id>
+            <id>schema3_2-xjc</id>
             <goals>
               <goal>xjc</goal>
             </goals>
@@ -171,8 +176,27 @@
                 <source>src/main/resources/xsd/v32/cfdv32.xsd</source>
                 <source>src/main/resources/xsd/v32/TimbreFiscalDigital.xsd</source>
               </sources>
-              <outputDirectory>${project.build.directory}/generated-sources/xjc4</outputDirectory>          
-              <staleFile>${project.build.directory}/generated-sources/xjc4/.staleFlag</staleFile>
+              <outputDirectory>${project.build.directory}/generated-sources/xjc3_2</outputDirectory>          
+              <staleFile>${project.build.directory}/generated-sources/xjc3_2/.staleFlag</staleFile>
+              <extension>true</extension>
+            </configuration>
+          </execution>
+          <execution>
+            <id>schema3_3-xjc</id>
+            <goals>
+              <goal>xjc</goal>
+            </goals>
+            <configuration>
+              <packageName>mx.bigdata.sat.cfdi.v33.schema</packageName>
+              <sources>
+                <source>src/main/resources/xsd/v33/cfdv33.xsd</source>
+                <source>src/main/resources/xsd/v33/TimbreFiscalDigitalv11.xsd</source>
+              </sources>
+              <xjbSources>
+                  <xjbSource>src/main/resources/cxf/bindings.xjb</xjbSource>
+              </xjbSources>              
+              <outputDirectory>${project.build.directory}/generated-sources/xjc3_3</outputDirectory>          
+              <staleFile>${project.build.directory}/generated-sources/xjc3_3/.staleFlag</staleFile>
               <extension>true</extension>
             </configuration>
           </execution>
@@ -259,7 +283,7 @@
             <configuration>
               <packageName>mx.bigdata.sat.common.ecc.schema</packageName>
               <sources>
-                <source>src/main/resources/xsd/common/ecc/ecc.xsd</source>
+                <source>src/main/resources/xsd/common/ecc/v10/ecc.xsd</source>
               </sources>
               <outputDirectory>${project.build.directory}/generated-sources/xjc9</outputDirectory>          
               <staleFile>${project.build.directory}/generated-sources/xjc9/.staleFlag</staleFile>
@@ -424,10 +448,28 @@
             <configuration>
               <packageName>mx.bigdata.sat.common.nomina.schema</packageName>
               <sources>
-                <source>src/main/resources/xsd/common/nomina/nomina11.xsd</source>
+                <source>src/main/resources/xsd/common/nomina/v11/nomina11.xsd</source>
               </sources>
               <outputDirectory>${project.build.directory}/generated-sources/xjc19</outputDirectory>          
               <staleFile>${project.build.directory}/generated-sources/xjc19/.staleFlag</staleFile>
+              <extension>true</extension>
+            </configuration>
+          </execution>
+          <execution>
+            <id>schema19_1-xjc</id>
+            <goals>
+              <goal>xjc</goal>
+            </goals>
+            <configuration>
+              <packageName>mx.bigdata.sat.common.nomina.v12.schema</packageName>
+              <sources>
+                <source>src/main/resources/xsd/common/nomina/v12/nomina12.xsd</source>
+              </sources>
+              <xjbSources>
+                  <xjbSource>src/main/resources/cxf/bindings.xjb</xjbSource>
+              </xjbSources>              
+              <outputDirectory>${project.build.directory}/generated-sources/xjc19_1</outputDirectory>          
+              <staleFile>${project.build.directory}/generated-sources/xjc19_1/.staleFlag</staleFile>
               <extension>true</extension>
             </configuration>
           </execution>
@@ -790,6 +832,7 @@
                     <source>${project.build.directory}/generated-sources/xjc18</source>
                     <source>${project.build.directory}/generated-sources/xjc18-11</source>
                     <source>${project.build.directory}/generated-sources/xjc19</source>
+                    <source>${project.build.directory}/generated-sources/xjc19_1</source>
                     <source>${project.build.directory}/generated-sources/xjc2</source>
                     <source>${project.build.directory}/generated-sources/xjc20</source>
                     <source>${project.build.directory}/generated-sources/xjc21</source>
@@ -802,10 +845,11 @@
                     <source>${project.build.directory}/generated-sources/xjc28</source>
                     <source>${project.build.directory}/generated-sources/xjc29</source>
                     <source>${project.build.directory}/generated-sources/xjc3</source>
+                    <source>${project.build.directory}/generated-sources/xjc3_2</source>
+                    <source>${project.build.directory}/generated-sources/xjc3_3</source>
                     <source>${project.build.directory}/generated-sources/xjc30</source>
                     <source>${project.build.directory}/generated-sources/xjc31</source>
                     <source>${project.build.directory}/generated-sources/xjc32</source>
-                    <source>${project.build.directory}/generated-sources/xjc4</source>
                     <source>${project.build.directory}/generated-sources/xjc5</source>
                     <source>${project.build.directory}/generated-sources/xjc6</source>
                     <source>${project.build.directory}/generated-sources/xjc7</source>

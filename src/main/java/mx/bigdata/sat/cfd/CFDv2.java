@@ -98,17 +98,20 @@ public final class CFDv2 implements CFD2 {
         this.document = load(in);
     }
 
+    public CFDv2(Comprobante comprobante, String... contexts) throws Exception {
+        this.context = getContext(contexts);
+        this.document = copy(comprobante);
+    }
+
     public void addNamespace(String uri, String prefix) {
         localPrefixes.put(uri, prefix);
     }
 
-    @Override
     public void setTransformerFactory(TransformerFactory tf) {
         this.tf = tf;
         tf.setURIResolver(new URIResolverImpl());
     }
 
-    @Override
     public void sellar(PrivateKey key, X509Certificate cert) throws Exception {
         String nc = new String(cert.getSerialNumber().toByteArray());
         if (!nc.equals("20001000000200001428")) {
@@ -128,12 +131,10 @@ public final class CFDv2 implements CFD2 {
         return getComprobante();
     }
 
-    @Override
     public void validar() throws Exception {
         validar(null);
     }
 
-    @Override
     public void verificar() throws Exception {
         String certStr = document.getCertificado();
         Base64 b64 = new Base64();
@@ -147,7 +148,6 @@ public final class CFDv2 implements CFD2 {
         verificar(cert);
     }
 
-    @Override
     public void verificar(Certificate cert) throws Exception {
         String sigStr = document.getSello();
         Base64 b64 = new Base64();

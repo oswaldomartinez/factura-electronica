@@ -75,7 +75,7 @@ public final class CFDv22 implements CFD2 {
         "/xsd/common/pfic/pfic.xsd",
         "/xsd/common/psgcfdsp/psgcfdsp.xsd",
         "/xsd/common/psgecfd/psgecfd.xsd",
-        "/xsd/common/terceros/terceros11.xsd",
+        "/xsd/common/terceros/terceros.xsd",
         "/xsd/common/ventavehiculos/v10/ventavehiculos.xsd"
     };
 
@@ -145,6 +145,7 @@ public final class CFDv22 implements CFD2 {
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Source[] schemas = new Source[XSD.length];
         for (int i = 0; i < XSD.length; i++) {
+            System.out.print("loading " + XSD[i]);
             schemas[i] = new StreamSource(getClass().getResourceAsStream(XSD[i]));
         }
         Schema schema = sf.newSchema(schemas);

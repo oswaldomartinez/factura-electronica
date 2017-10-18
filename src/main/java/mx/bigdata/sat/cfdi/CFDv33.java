@@ -100,7 +100,7 @@ public final class CFDv33 implements CFDI33 {
         "/xsd/common/iedu/iedu.xsd",
         "/xsd/common/ventavehiculos/v10/ventavehiculos.xsd",
         "/xsd/common/ventavehiculos/v11/ventavehiculos11.xsd",
-        "/xsd/common/terceros/terceros11.xsd",
+        "/xsd/common/terceros/terceros.xsd",
         "/xsd/common/AcreditamientoIEPS/AcreditamientoIEPS10.xsd",
         "/xsd/common/ecb/ecb.xsd",
         "/xsd/common/psgcfdsp/psgcfdsp.xsd",
@@ -204,7 +204,7 @@ public final class CFDv33 implements CFDI33 {
         }
     }
 
-    //Verifica textualmente el XML con el XSD (Funciona cuando queremos validar un XML que NO fue creado con esta librería
+    //Verifica textualmente el XML con el XSD (Funciona cuando queremos validar un XML que NO fue creado con esta librerÃ­a
     public void verificar(InputStream in) throws Exception {
         String certStr = document.getCertificado();
         Base64 b64 = new Base64();
@@ -241,8 +241,8 @@ public final class CFDv33 implements CFDI33 {
         m.marshal(document, out);
     }
 
-    //Se implementó este método para que agregue los esquemas y los namespace's de manera automática (solo hay que enviar los contexts en el constructor)
-    //Se deben agregar todos los complementos en todas sus versiones (tambien a todas las versiones de CFDi según sus complementos)
+    //Se implementÃ³ este mÃ©todo para que agregue los esquemas y los namespace's de manera automÃ¡tica (solo hay que enviar los contexts en el constructor)
+    //Se deben agregar todos los complementos en todas sus versiones (tambien a todas las versiones de CFDi segÃºn sus complementos)
     private String getSchemaLocation() throws Exception {
         List<String> contexts = new ArrayList<>();
         String schema = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd";
@@ -255,7 +255,7 @@ public final class CFDv33 implements CFDI33 {
                     schema += " http://www.sat.gob.mx/implocal http://www.sat.gob.mx/sitio_internet/cfd/implocal/implocal.xsd";
                     addNamespace("http://www.sat.gob.mx/implocal", "implocal");
                 } else {
-                    System.out.println("El complemento " + o + " aún no ha sido declarado.");
+                    System.out.println("El complemento " + o + " aÃºn no ha sido declarado.");
                 }
             }
             if (!contexts.isEmpty()) {
@@ -284,7 +284,7 @@ public final class CFDv33 implements CFDI33 {
             factory = TransformerFactory.newInstance();
             factory.setURIResolver(new URIResolverImpl());
         }
-        Transformer transformer = factory.newTransformer(new StreamSource(getClass().getResourceAsStream(XSLT)));
+         Transformer transformer = factory.newTransformer(new StreamSource(getClass().getResourceAsStream(XSLT)));
         transformer.transform(in, out);
         return baos.toByteArray();
     }

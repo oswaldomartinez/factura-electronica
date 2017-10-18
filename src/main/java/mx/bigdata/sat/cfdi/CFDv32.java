@@ -257,7 +257,7 @@ public final class CFDv32 implements CFDI {
                     schema += " http://www.sat.gob.mx/implocal http://www.sat.gob.mx/sitio_internet/cfd/implocal/implocal.xsd";
                     addNamespace("http://www.sat.gob.mx/implocal", "implocal");
                 } else {
-                    System.out.println("El complemento " + o + " a�n no ha sido declarado.");
+                    System.out.println("El complemento " + o + " aún no ha sido declarado.");
                 }
             }
             if (!contexts.isEmpty()) {
