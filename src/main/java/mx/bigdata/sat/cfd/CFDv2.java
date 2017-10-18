@@ -70,7 +70,11 @@ public final class CFDv2 implements CFD2 {
         "/xsd/common/iedu/iedu.xsd",
         "/xsd/common/ecb/ecb.xsd",
         "/xsd/common/psgcfdsp/psgcfdsp.xsd",
-        "/xsd/common/psgecfd/psgecfd.xsd"
+        "/xsd/common/psgecfd/psgecfd.xsd",
+        "/xsd/common/donat/v10/donat.xsd",
+    	"/xsd/common/leyendasFisc/leyendasFisc.xsd",
+	    "/xsd/common/pfic/pfic.xsd",
+    	"/xsd/common/ventavehiculos/v10/ventavehiculos.xsd"
     };
 
     private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
@@ -92,11 +96,6 @@ public final class CFDv2 implements CFD2 {
     public CFDv2(InputStream in, String... contexts) throws Exception {
         this.context = getContext(contexts);
         this.document = load(in);
-    }
-
-    public CFDv2(Comprobante comprobante, String... contexts) throws Exception {
-        this.context = getContext(contexts);
-        this.document = copy(comprobante);
     }
 
     public void addNamespace(String uri, String prefix) {
@@ -132,21 +131,6 @@ public final class CFDv2 implements CFD2 {
     @Override
     public void validar() throws Exception {
         validar(null);
-    }
-
-    @Override
-    public void validar(ErrorHandler handler) throws Exception {
-        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Source[] schemas = new Source[XSD.length];
-        for (int i = 0; i < XSD.length; i++) {
-            schemas[i] = new StreamSource(getClass().getResourceAsStream(XSD[i]));
-        }
-        Schema schema = sf.newSchema(schemas);
-        Validator validator = schema.newValidator();
-        if (handler != null) {
-            validator.setErrorHandler(handler);
-        }
-        validator.validate(new JAXBSource(context, document));
     }
 
     @Override
@@ -191,29 +175,44 @@ public final class CFDv2 implements CFD2 {
         }
     }
 
-    //Verifica textualmente el XML con el XSD (Funciona cuando queremos validar un XML que NO fue creado con esta librería
-    public void verificar(InputStream in) throws Exception {
-        String certStr = document.getCertificado();
-        Base64 b64 = new Base64();
-        byte[] cbs = b64.decode(certStr);
+    //Verifica textualmente el XML con el XSD (Funciona cuando queremos validar un XML que NO fue creado con esta librerï¿½a
+ //   public void verificar(InputStream in) throws Exception {
+ //       String certStr = document.getCertificado();
+ //       Base64 b64 = new Base64();
+ //       byte[] cbs = b64.decode(certStr);
 
-        X509Certificate cert = KeyLoaderFactory.createInstance(
-                KeyLoaderEnumeration.PUBLIC_KEY_LOADER,
-                new ByteArrayInputStream(cbs)
-        ).getKey();
+ //       X509Certificate cert = KeyLoaderFactory.createInstance(
+ //               KeyLoaderEnumeration.PUBLIC_KEY_LOADER,
+ //               new ByteArrayInputStream(cbs)
+ //       ).getKey();
 
-        String sigStr = document.getSello();
-        byte[] signature = b64.decode(sigStr);
-        byte[] bytes = getOriginalBytes(in);
-        Signature sig = Signature.getInstance("SHA1withRSA");
-        sig.initVerify(cert);
-        sig.update(bytes);
-        boolean bool = sig.verify(signature);
-        if (!bool) {
-            throw new Exception("Invalid signature.");
-        }
-    }
+ //       String sigStr = document.getSello();
+ //       byte[] signature = b64.decode(sigStr);
+ //       byte[] bytes = getOriginalBytes(in);
+ //       Signature sig = Signature.getInstance("SHA1withRSA");
+ //       sig.initVerify(cert);
+ //       sig.update(bytes);
+ //       boolean bool = sig.verify(signature);
+ //       if (!bool) {
+ //           throw new Exception("Invalid signature.");
+ //       }
+ //   }
 
+  	public void validar(ErrorHandler handler) throws Exception {
+     	SchemaFactory sf =
+              SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+     	Source[] schemas = new Source[XSD.length];
+     	for (int i = 0; i < XSD.length; i++) {
+   	       schemas[i] = new StreamSource(getClass().getResourceAsStream(XSD[i]));
+    	}
+    	Schema schema = sf.newSchema(schemas);
+    	Validator validator = schema.newValidator();
+  	  	if (handler != null) {
+          	validator.setErrorHandler(handler);
+    	}
+  	    validator.validate(new JAXBSource(context, document));
+ 	}
+ 	
     @Override
     public void guardar(OutputStream out) throws Exception {
         Marshaller m = context.createMarshaller();
@@ -226,6 +225,16 @@ public final class CFDv2 implements CFD2 {
         out.write(xmlHeaderBytes);
         m.marshal(document, out);
     }
+//  public void validar(ErrorHandler handler) throws Exception {
+//    SchemaFactory sf =
+//      SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//    Schema schema = sf.newSchema(getClass().getResource(XSD));
+//    Validator validator = schema.newValidator();
+//    if (handler != null) {
+//      validator.setErrorHandler(handler);
+//    }
+//    validator.validate(new JAXBSource(context, document));
+//  }
 
     @Override
     public String getCadenaOriginal() throws Exception {
@@ -251,20 +260,53 @@ public final class CFDv2 implements CFD2 {
         return baos.toByteArray();
     }
 
-    byte[] getOriginalBytes(InputStream in) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Source source = new StreamSource(in);
-        Result out = new StreamResult(baos);
-        TransformerFactory factory = tf;
-        if (factory == null) {
-            factory = TransformerFactory.newInstance();
-            factory.setURIResolver(new URIResolverImpl());
-        }
-        Transformer transformer = factory.newTransformer(new StreamSource(getClass().getResourceAsStream(XSLT)));
-        transformer.transform(source, out);
-        in.close();
-        return baos.toByteArray();
-    }
+  public void verificar(InputStream in) throws Exception{
+      String certStr = document.getCertificado();
+      Base64 b64 = new Base64();
+      byte[] cbs = b64.decode(certStr);
+      X509Certificate cert = KeyLoaderFactory.createInstance(
+              KeyLoaderEnumeration.PUBLIC_KEY_LOADER,
+              new ByteArrayInputStream(cbs)
+      ).getKey();
+      String sigStr = document.getSello();
+      byte[] signature = b64.decode(sigStr);
+      byte[] bytes = getOriginalBytes(in);
+      boolean md5 = true;
+      
+      if (getYear() < 2011) {
+          Signature sig = Signature.getInstance("MD5withRSA");
+          sig.initVerify(cert);
+          sig.update(bytes);
+          try {
+              sig.verify(signature);
+          } catch (SignatureException e){
+              md5 = false;
+          }
+      }
+      if (getYear() > 2010 || !md5) {
+          Signature sig = Signature.getInstance("SHA1withRSA");
+          sig.initVerify(cert);
+          sig.update(bytes);
+          boolean bool = sig.verify(signature);
+          if (!bool) {
+              throw new Exception("Sellado invalido.");
+          }
+      }
+  }
+ //   byte[] getOriginalBytes(InputStream in) throws Exception {
+ //       ByteArrayOutputStream baos = new ByteArrayOutputStream();
+ //       Source source = new StreamSource(in);
+ //       Result out = new StreamResult(baos);
+ //       TransformerFactory factory = tf;
+ //       if (factory == null) {
+ //           factory = TransformerFactory.newInstance();
+ //           factory.setURIResolver(new URIResolverImpl());
+ //       }
+ //       Transformer transformer = factory.newTransformer(new StreamSource(getClass().getResourceAsStream(XSLT)));
+ //       transformer.transform(source, out);
+ //       in.close();
+ //       return baos.toByteArray();
+ //   }
 
     String getSignature(PrivateKey key) throws Exception {
         byte[] bytes = getOriginalBytes();
@@ -282,6 +324,25 @@ public final class CFDv2 implements CFD2 {
         return copy(document);
     }
 
+  byte[] getOriginalBytes(InputStream in) throws Exception{
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      try {
+          Source source = new StreamSource(in);
+          Source xsl = new StreamSource(getClass().getResourceAsStream(XSLT));
+          Result out = new StreamResult(baos);
+          TransformerFactory factory = tf;
+          if (factory == null) {
+              factory = TransformerFactory.newInstance();
+              factory.setURIResolver(new URIResolverImpl());
+          }
+          Transformer transformer = factory
+                  .newTransformer(new StreamSource(getClass().getResourceAsStream(XSLT)));
+          transformer.transform(source, out);
+      } finally {
+          in.close();
+      }
+      return baos.toByteArray();
+  }
     // Defensive deep-copy
     private Comprobante copy(Comprobante comprobante) throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

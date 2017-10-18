@@ -12,7 +12,7 @@
 		la generación de las cadenas originales de los complementos fiscales 
 	-->
 	<xsl:include href="/xslt/cfd/ecc/ecc.xslt"/>
-	<xsl:include href="/xslt/cfd/donat/donat.xslt"/>
+	<xsl:include href="/xslt/cfd/donat/v10/donat.xslt"/>
 	<xsl:include href="/xslt/cfd/divisas/divisas.xslt"/>
 	<xsl:include href="/xslt/cfd/implocal/implocal.xslt"/>
 	<xsl:include href="/xslt/cfd/detallista/detallista.xslt"/>

@@ -62,7 +62,7 @@ public final class CFDv32 implements CFDI {
 
     private static final String XSLT = "/xslt/cadenaoriginal_3_2.xslt";
 
-    private static final String[] XSD = new String[]{
+    private static final String[] XSD = new String[] {
         "/xsd/v32/cfdv32.xsd",
         "/xsd/v32/TimbreFiscalDigital.xsd",
         "/xsd/common/tdCFDI.xsd",
@@ -102,7 +102,8 @@ public final class CFDv32 implements CFDI {
         "/xsd/common/AcreditamientoIEPS/AcreditamientoIEPS10.xsd",
         "/xsd/common/ecb/ecb.xsd",
         "/xsd/common/psgcfdsp/psgcfdsp.xsd",
-        "/xsd/common/psgecfd/psgecfd.xsd"
+        "/xsd/common/psgecfd/psgecfd.xsd",
+        "/xsd/common/terceros/terceros.xsd"
     };
 
     private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
@@ -110,7 +111,7 @@ public final class CFDv32 implements CFDI {
     private static final String BASE_CONTEXT = "mx.bigdata.sat.cfdi.v32.schema";
 
     private final static Joiner JOINER = Joiner.on(':');
-
+    
     private final JAXBContext context;
 
     public static final ImmutableMap<String, String> PREFIXES = ImmutableMap.of("http://www.w3.org/2001/XMLSchema-instance", "xsi", "http://www.sat.gob.mx/cfd/3", "cfdi", "http://www.sat.gob.mx/TimbreFiscalDigital", "tfd");
@@ -204,7 +205,7 @@ public final class CFDv32 implements CFDI {
         }
     }
 
-    //Verifica textualmente el XML con el XSD (Funciona cuando queremos validar un XML que NO fue creado con esta librería
+    //Verifica textualmente el XML con el XSD (Funciona cuando queremos validar un XML que NO fue creado con esta librerï¿½a
     public void verificar(InputStream in) throws Exception {
         String certStr = document.getCertificado();
         Base64 b64 = new Base64();
@@ -227,20 +228,20 @@ public final class CFDv32 implements CFDI {
         }
     }
 
-    @Override
-    public void guardar(OutputStream out) throws Exception {
-        Marshaller m = context.createMarshaller();
-        m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl(localPrefixes));
-        m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, getSchemaLocation());
-        byte[] xmlHeaderBytes = XML_HEADER.getBytes("UTF8");
-        out.write(xmlHeaderBytes);
-        m.marshal(document, out);
-    }
+//    @Override
+//    public void guardar(OutputStream out) throws Exception {
+//        Marshaller m = context.createMarshaller();
+//        m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl(localPrefixes));
+//        m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+//        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+//        m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, getSchemaLocation());
+//        byte[] xmlHeaderBytes = XML_HEADER.getBytes("UTF8");
+//        out.write(xmlHeaderBytes);
+//        m.marshal(document, out);
+//    }
 
-    //Se implementó este método para que agregue los esquemas y los namespace's de manera automática (solo hay que enviar los contexts en el constructor)
-    //Se deben agregar todos los complementos en todas sus versiones (tambien a todas las versiones de CFDi según sus complementos)
+    //Se implementï¿½ este mï¿½todo para que agregue los esquemas y los namespace's de manera automï¿½tica (solo hay que enviar los contexts en el constructor)
+    //Se deben agregar todos los complementos en todas sus versiones (tambien a todas las versiones de CFDi segï¿½n sus complementos)
     private String getSchemaLocation() throws Exception {
         List<String> contexts = new ArrayList<>();
         String schema = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd";
@@ -256,7 +257,7 @@ public final class CFDv32 implements CFDI {
                     schema += " http://www.sat.gob.mx/implocal http://www.sat.gob.mx/sitio_internet/cfd/implocal/implocal.xsd";
                     addNamespace("http://www.sat.gob.mx/implocal", "implocal");
                 } else {
-                    System.out.println("El complemento " + o + " aún no ha sido declarado.");
+                    System.out.println("El complemento " + o + " aï¿½n no ha sido declarado.");
                 }
             }
             if (!contexts.isEmpty()) {
@@ -266,12 +267,43 @@ public final class CFDv32 implements CFDI {
         return schema;
     }
 
+  public void guardar(OutputStream out) throws Exception {
+    Marshaller m = context.createMarshaller();
+    m.setProperty("com.sun.xml.bind.namespacePrefixMapper",
+                  new NamespacePrefixMapperImpl(localPrefixes));
+    m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+
+    String schemas = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd";
+    if(document.getComplemento()!=null && document.getComplemento().getAny()!=null){
+        for (int i=0; i < document.getComplemento().getAny().size(); i++) {
+            if (document.getComplemento().getAny().get(i) instanceof mx.bigdata.sat.common.nomina.schema.Nomina) {
+                schemas += " http://www.sat.gob.mx/nomina http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina11.xsd";
+            }
+            if (document.getComplemento().getAny().get(i) instanceof mx.bigdata.sat.common.aerolineas.schema.Aerolineas) {
+                schemas += " http://www.sat.gob.mx/aerolineas http://www.sat.gob.mx/sitio_internet/cfd/aerolineas/aerolineas.xsd";
+            }
+            if (document.getComplemento().getAny().get(i) instanceof mx.bigdata.sat.common.ine.schema.INE) {
+                schemas += " http://www.sat.gob.mx/ine http://www.sat.gob.mx/sitio_internet/cfd/ine/ine11.xsd";
+            }
+        }
+    }
+    m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, schemas);
+    //m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, 
+    //              "http://www.sat.gob.mx/cfd/3  "
+    //              + "http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd");
+    byte[] xmlHeaderBytes = XML_HEADER.getBytes("UTF8");
+    out.write(xmlHeaderBytes); 
+    m.marshal(document, out);
+  }
+
     @Override
     public String getCadenaOriginal() throws Exception {
         byte[] bytes = getOriginalBytes();
         return new String(bytes, "UTF8");
     }
-
+    
     public static Comprobante newComprobante(InputStream in) throws Exception {
         return load(in);
     }
@@ -290,21 +322,40 @@ public final class CFDv32 implements CFDI {
         return baos.toByteArray();
     }
 
-    //Funciona en conjunto con: verificar(InputStream in)
-    byte[] getOriginalBytes(InputStream in) throws Exception {
+    byte[] getOriginalBytes(InputStream in) throws Exception{
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Source source = new StreamSource(in);
-        Result out = new StreamResult(baos);
-        TransformerFactory factory = tf;
-        if (factory == null) {
-            factory = TransformerFactory.newInstance();
-            factory.setURIResolver(new URIResolverImpl());
+        try {
+            Source source = new StreamSource(in);
+            Source xsl = new StreamSource(getClass().getResourceAsStream(XSLT));
+            Result out = new StreamResult(baos);
+            TransformerFactory factory = tf;
+            if (factory == null) {
+                factory = TransformerFactory.newInstance();
+                factory.setURIResolver(new URIResolverImpl());
+            }
+            Transformer transformer = factory
+                    .newTransformer(new StreamSource(getClass().getResourceAsStream(XSLT)));
+            transformer.transform(source, out);
+        } finally {
+            in.close();
         }
-        Transformer transformer = factory.newTransformer(new StreamSource(getClass().getResourceAsStream(XSLT)));
-        transformer.transform(source, out);
-        in.close();
         return baos.toByteArray();
     }
+    //Funciona en conjunto con: verificar(InputStream in)
+//    byte[] getOriginalBytes(InputStream in) throws Exception {
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        Source source = new StreamSource(in);
+//        Result out = new StreamResult(baos);
+//        TransformerFactory factory = tf;
+//        if (factory == null) {
+//            factory = TransformerFactory.newInstance();
+//            factory.setURIResolver(new URIResolverImpl());
+//        }
+//        Transformer transformer = factory.newTransformer(new StreamSource(getClass().getResourceAsStream(XSLT)));
+//        transformer.transform(source, out);
+//        in.close();
+//        return baos.toByteArray();
+//    }
 
     String getSignature(PrivateKey key) throws Exception {
         byte[] bytes = getOriginalBytes();
