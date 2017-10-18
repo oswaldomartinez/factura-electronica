@@ -28,7 +28,7 @@
   <xsl:include href="/xslt/cfd/ecb/ecb.xslt"/>
   <xsl:include href="/xslt/cfd/detallista/detallista.xslt"/>
   <xsl:include href="/xslt/cfd/implocal/implocal.xslt"/>
-  <xsl:include href="/xslt/cfd/terceros/terceros.xslt"/>
+  <xsl:include href="/xslt/cfd/terceros/terceros11.xslt"/>
   <xsl:include href="/xslt/cfd/iedu/iedu.xslt"/>
   <xsl:include href="/xslt/cfd/ventavehiculos/v11/ventavehiculos11.xslt"/>
   <xsl:include href="/xslt/cfd/pfic/pfic.xslt"/>
@@ -36,6 +36,7 @@
   <xsl:include href="/xslt/cfd/leyendasFiscales/leyendasFisc.xslt"/>
   <xsl:include href="/xslt/cfd/spei/spei.xslt"/>
   <xsl:include href="/xslt/cfd/nomina/nomina11.xslt"/>
+  <xsl:include href="/xslt/cfd/nomina/nomina12.xslt"/>
   <xsl:include href="/xslt/cfd/cfdiregistrofiscal/cfdiregistrofiscal.xslt"/>
   <xsl:include href="/xslt/cfd/pagoenespecie/pagoenespecie.xslt"/>
   <xsl:include href="/xslt/cfd/consumodecombustibles/consumodecombustibles.xslt"/>
