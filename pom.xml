@@ -16,12 +16,12 @@
         <snapshotRepository>
             <id>nexus-facelend</id>
             <name>RepositoryProxy</name>
-            <url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url>
+            <url>http://nexus.openpay.mx:8081/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>nexus-facelend</id>
             <name>RepositoryProxy</name>
-            <url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
+            <url>http://nexus.openpay.mx:8081/nexus/content/repositories/releases</url>
         </repository>
     </distributionManagement>
 
