@@ -28,7 +28,7 @@
   <xsl:include href="/xslt/cfd/ecb/ecb.xslt"/>
   <xsl:include href="/xslt/cfd/detallista/detallista.xslt"/>
   <xsl:include href="/xslt/cfd/implocal/implocal.xslt"/>
-  <xsl:include href="/xslt/cfd/terceros/terceros11.xslt"/>
+  <xsl:include href="/xslt/cfd/terceros/terceros.xslt"/>
   <xsl:include href="/xslt/cfd/iedu/iedu.xslt"/>
   <xsl:include href="/xslt/cfd/ventavehiculos/v11/ventavehiculos11.xslt"/>
   <xsl:include href="/xslt/cfd/pfic/pfic.xslt"/>
