@@ -191,6 +191,7 @@
               <sources>
                 <source>src/main/resources/xsd/v33/cfdv33.xsd</source>
                 <source>src/main/resources/xsd/v33/TimbreFiscalDigitalv11.xsd</source>
+                <source>src/main/resources/xsd/common/Pagos/Pagos10.xsd</source>
               </sources>
               <xjbSources>
                   <xjbSource>src/main/resources/cxf/bindings.xjb</xjbSource>
@@ -719,24 +720,6 @@
               <extension>true</extension>
             </configuration>
           </execution>
-          <execution>
-            <id>schema103-xjc</id>
-            <goals>
-              <goal>xjc</goal>
-            </goals>
-            <configuration>
-              <packageName>mx.bigdata.sat.common.pagos.schema</packageName>
-              <sources>
-                <source>src/main/resources/xsd/common/Pagos/Pagos10.xsd</source>
-              </sources>
-              <xjbSources>
-                  <xjbSource>src/main/resources/cxf/bindings.xjb</xjbSource>
-              </xjbSources>              
-              <outputDirectory>${project.build.directory}/generated-sources/xjc103</outputDirectory>          
-              <staleFile>${project.build.directory}/generated-sources/xjc103/.staleFlag</staleFile>
-              <extension>true</extension>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -840,7 +823,6 @@
                     <source>${project.build.directory}/generated-sources/xjc100</source>
                     <source>${project.build.directory}/generated-sources/xjc101</source>
                     <source>${project.build.directory}/generated-sources/xjc102</source>
-                    <source>${project.build.directory}/generated-sources/xjc103</source>
                     <source>${project.build.directory}/generated-sources/xjc11</source>
                     <source>${project.build.directory}/generated-sources/xjc12</source>
                     <source>${project.build.directory}/generated-sources/xjc13</source>

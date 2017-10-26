@@ -15,10 +15,6 @@
  */
 package mx.bigdata.sat.cfdi;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -30,6 +26,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -46,6 +43,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+
 import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
 import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
 import mx.bigdata.sat.common.ComprobanteBase33;
@@ -53,10 +51,16 @@ import mx.bigdata.sat.common.NamespacePrefixMapperImpl;
 import mx.bigdata.sat.common.URIResolverImpl;
 import mx.bigdata.sat.security.KeyLoaderEnumeration;
 import mx.bigdata.sat.security.factory.KeyLoaderFactory;
+
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.ErrorHandler;
+
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public final class CFDv33 implements CFDI33 {
 
@@ -254,7 +258,10 @@ public final class CFDv33 implements CFDI33 {
                 } else if (o instanceof mx.bigdata.sat.common.implocal.schema.ImpuestosLocales) {
                     schema += " http://www.sat.gob.mx/implocal http://www.sat.gob.mx/sitio_internet/cfd/implocal/implocal.xsd";
                     addNamespace("http://www.sat.gob.mx/implocal", "implocal");
-                } else {
+                } else if (o instanceof mx.bigdata.sat.common.aerolineas.schema.Aerolineas) {
+                    schema += " http://www.sat.gob.mx/aerolineas http://www.sat.gob.mx/sitio_internet/cfd/aerolineas/aerolineas.xsd";
+                    addNamespace("http://www.sat.gob.mx/aerolineas", "aerolineas");
+                }else {
                     System.out.println("El complemento " + o + " aún no ha sido declarado.");
                 }
             }
