@@ -261,7 +261,10 @@ public final class CFDv33 implements CFDI33 {
                 } else if (o instanceof mx.bigdata.sat.common.aerolineas.schema.Aerolineas) {
                     schema += " http://www.sat.gob.mx/aerolineas http://www.sat.gob.mx/sitio_internet/cfd/aerolineas/aerolineas.xsd";
                     addNamespace("http://www.sat.gob.mx/aerolineas", "aerolineas");
-                }else {
+                } else if (o instanceof mx.bigdata.sat.common.ine.schema.INE) {
+                    schema += " http://www.sat.gob.mx/ine http://www.sat.gob.mx/sitio_internet/cfd/ine/ine11.xsd";
+                    addNamespace("http://www.sat.gob.mx/ine", "ine");
+                } else {
                     System.out.println("El complemento " + o + " aún no ha sido declarado.");
                 }
             }
