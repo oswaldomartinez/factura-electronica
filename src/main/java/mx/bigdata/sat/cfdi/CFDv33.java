@@ -247,15 +247,19 @@ public final class CFDv33 implements CFDI33 {
         List<String> contexts = new ArrayList<>();
         String schema = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd";
         if (document != null && document.getComplemento() != null && document.getComplemento().size() > 0) {
-            for (Object o : document.getComplemento()) {
-                if (o instanceof mx.bigdata.sat.common.nomina.v12.schema.Nomina) {
-                    schema += " http://www.sat.gob.mx/nomina12 http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina12.xsd";
-                    addNamespace("http://www.sat.gob.mx/nomina12", "nomina12");
-                } else if (o instanceof mx.bigdata.sat.common.implocal.schema.ImpuestosLocales) {
-                    schema += " http://www.sat.gob.mx/implocal http://www.sat.gob.mx/sitio_internet/cfd/implocal/implocal.xsd";
-                    addNamespace("http://www.sat.gob.mx/implocal", "implocal");
-                } else {
-                    System.out.println("El complemento " + o + " aún no ha sido declarado.");
+            for (int i=0; i < document.getComplemento().size(); i++) {
+                for (Object o : document.getComplemento().get(i).getAny()) {
+                    if (o instanceof mx.bigdata.sat.common.nomina.v12.schema.Nomina) {
+                        schema += " http://www.sat.gob.mx/nomina12 http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina12.xsd";
+                    } else if (o instanceof mx.bigdata.sat.common.implocal.schema.ImpuestosLocales) {
+                        schema += " http://www.sat.gob.mx/implocal http://www.sat.gob.mx/sitio_internet/cfd/implocal/implocal.xsd";
+                    } else if (o instanceof mx.bigdata.sat.common.aerolineas.schema.Aerolineas) {
+                        schema += " http://www.sat.gob.mx/aerolineas http://www.sat.gob.mx/sitio_internet/cfd/aerolineas/aerolineas.xsd";
+                    } else if (o instanceof mx.bigdata.sat.common.ine.schema.INE) {
+                        schema += " http://www.sat.gob.mx/ine http://www.sat.gob.mx/sitio_internet/cfd/ine/ine11.xsd";
+                    } else {
+                        System.out.println("El complemento " + o.getClass() + " aún no ha sido declarado.");
+                    }
                 }
             }
             if (!contexts.isEmpty()) {
