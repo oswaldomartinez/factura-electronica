@@ -24,6 +24,7 @@ import java.security.PrivateKey;
 import java.security.Signature;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +33,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBSource;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -44,14 +49,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
-import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
-import mx.bigdata.sat.common.ComprobanteBase33;
-import mx.bigdata.sat.common.NamespacePrefixMapperImpl;
-import mx.bigdata.sat.common.URIResolverImpl;
-import mx.bigdata.sat.security.KeyLoaderEnumeration;
-import mx.bigdata.sat.security.factory.KeyLoaderFactory;
-
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -61,6 +58,14 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import mx.bigdata.sat.cfdi.v33.schema.Comprobante;
+import mx.bigdata.sat.cfdi.v33.schema.ObjectFactory;
+import mx.bigdata.sat.common.ComprobanteBase33;
+import mx.bigdata.sat.common.NamespacePrefixMapperImpl;
+import mx.bigdata.sat.common.URIResolverImpl;
+import mx.bigdata.sat.security.KeyLoaderEnumeration;
+import mx.bigdata.sat.security.factory.KeyLoaderFactory;
 
 public final class CFDv33 implements CFDI33 {
 
@@ -239,10 +244,12 @@ public final class CFDv33 implements CFDI33 {
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, getSchemaLocation());
         byte[] xmlHeaderBytes = XML_HEADER.getBytes("UTF8");
+        XMLStreamWriter writer = new CustomXMLStreamWriter((XMLStreamWriter) XMLOutputFactory
+                .newInstance().createXMLStreamWriter(out));
 
         out.write(xmlHeaderBytes);
 
-        m.marshal(document, out);
+        m.marshal(document, writer);
     }
 
     //Se implementó este método para que agregue los esquemas y los namespace's de manera automática (solo hay que enviar los contexts en el constructor)
@@ -261,6 +268,8 @@ public final class CFDv33 implements CFDI33 {
                         schema += " http://www.sat.gob.mx/aerolineas http://www.sat.gob.mx/sitio_internet/cfd/aerolineas/aerolineas.xsd";
                     } else if (o instanceof mx.bigdata.sat.common.ine.schema.INE) {
                         schema += " http://www.sat.gob.mx/ine http://www.sat.gob.mx/sitio_internet/cfd/ine/ine11.xsd";
+                    } else if (o instanceof mx.bigdata.sat.cfdi.v33.schema.Pagos) {
+                        schema += " http://www.sat.gob.mx/Pagos http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos10.xsd";
                     } else {
                         System.out.println("El complemento " + o.getClass() + " aún no ha sido declarado.");
                     }
@@ -404,6 +413,176 @@ public final class CFDv33 implements CFDI33 {
             out.printf("%02x ", b & 0xff);
         }
         out.println();
+    }
+    
+    class CustomXMLStreamWriter implements XMLStreamWriter {
+
+        private final XMLStreamWriter writer;
+
+        public CustomXMLStreamWriter(XMLStreamWriter writer) {
+            this.writer = writer;
+        }
+
+        public void writeStartElement(String localName) throws XMLStreamException {
+            writer.writeStartElement(localName);
+
+        }
+
+        public void writeStartElement(String namespaceURI, String localName) throws XMLStreamException {
+            writer.writeStartElement(namespaceURI, localName);
+        }
+
+        public void writeStartElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
+            writer.writeStartElement(prefix, localName, namespaceURI);
+        }
+
+        public void writeNamespace(String prefix, String namespaceURI) throws XMLStreamException {
+            if (Arrays.asList("", "ns2").contains(prefix) && "http://www.sat.gob.mx/Pagos".equals(namespaceURI)) {
+                return;
+            }
+            writer.writeNamespace(prefix, namespaceURI);
+        }
+
+        @Override
+        public void writeEmptyElement(String namespaceURI, String localName) throws XMLStreamException {
+            writer.writeEmptyElement(namespaceURI, localName);
+        }
+
+        @Override
+        public void writeEmptyElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
+            writer.writeEmptyElement(prefix, localName, namespaceURI);            
+        }
+
+        @Override
+        public void writeEmptyElement(String localName) throws XMLStreamException {
+            writer.writeEmptyElement(localName);
+        }
+
+        @Override
+        public void writeEndElement() throws XMLStreamException {
+            writer.writeEndElement();            
+        }
+
+        @Override
+        public void writeEndDocument() throws XMLStreamException {
+            writer.writeEndDocument();            
+        }
+
+        @Override
+        public void close() throws XMLStreamException {
+            writer.close();            
+        }
+
+        @Override
+        public void flush() throws XMLStreamException {
+            writer.flush();            
+        }
+
+        @Override
+        public void writeAttribute(String localName, String value) throws XMLStreamException {
+            writer.writeAttribute(localName, value);        
+        }
+
+        @Override
+        public void writeAttribute(String prefix, String namespaceURI, String localName, String value)
+                throws XMLStreamException {
+            writer.writeAttribute(prefix, namespaceURI, localName, value);       
+        }
+
+        @Override
+        public void writeAttribute(String namespaceURI, String localName, String value) throws XMLStreamException {
+            writer.writeAttribute(namespaceURI, localName, value);       
+        }
+
+        @Override
+        public void writeDefaultNamespace(String namespaceURI) throws XMLStreamException {
+            writer.writeDefaultNamespace(namespaceURI);       
+        }
+
+        @Override
+        public void writeComment(String data) throws XMLStreamException {
+            writer.writeComment(data);       
+        }
+
+        @Override
+        public void writeProcessingInstruction(String target) throws XMLStreamException {
+            writer.writeProcessingInstruction(target);       
+        }
+
+        @Override
+        public void writeProcessingInstruction(String target, String data) throws XMLStreamException {
+            writer.writeProcessingInstruction(target, data);       
+        }
+
+        @Override
+        public void writeCData(String data) throws XMLStreamException {
+            writer.writeCData(data);       
+        }
+
+        @Override
+        public void writeDTD(String dtd) throws XMLStreamException {
+            writer.writeCData(dtd);       
+        }
+
+        @Override
+        public void writeEntityRef(String name) throws XMLStreamException {
+            writer.writeEntityRef(name);       
+        }
+
+        @Override
+        public void writeStartDocument() throws XMLStreamException {
+            writer.writeStartDocument();       
+        }
+
+        @Override
+        public void writeStartDocument(String version) throws XMLStreamException {
+            writer.writeStartDocument(version);       
+        }
+
+        @Override
+        public void writeStartDocument(String encoding, String version) throws XMLStreamException {
+            writer.writeStartDocument(encoding, version);       
+        }
+
+        @Override
+        public void writeCharacters(String text) throws XMLStreamException {
+            writer.writeCharacters(text);       
+        }
+
+        @Override
+        public void writeCharacters(char[] text, int start, int len) throws XMLStreamException {
+            writer.writeCharacters(text, start, len);       
+        }
+
+        @Override
+        public String getPrefix(String uri) throws XMLStreamException {
+            return writer.getPrefix(uri);       
+        }
+
+        @Override
+        public void setPrefix(String prefix, String uri) throws XMLStreamException {
+            writer.setPrefix(prefix, uri);       
+        }
+
+        @Override
+        public void setDefaultNamespace(String uri) throws XMLStreamException {
+            writer.setDefaultNamespace(uri);       
+        }
+
+        @Override
+        public void setNamespaceContext(NamespaceContext context) throws XMLStreamException {
+            writer.setNamespaceContext(context);       
+        }
+
+        @Override
+        public NamespaceContext getNamespaceContext() {
+            return writer.getNamespaceContext();       
+        }
+
+        @Override
+        public Object getProperty(String name) throws IllegalArgumentException {
+            return writer.getProperty(name);       
+        }
     }
 
 }
