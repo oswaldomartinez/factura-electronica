@@ -263,6 +263,8 @@ public final class CFDv33 implements CFDI33 {
                         schema += " http://www.sat.gob.mx/ine http://www.sat.gob.mx/sitio_internet/cfd/ine/ine11.xsd";
                     } else if (o instanceof mx.bigdata.sat.cfdi.v33.schema.Pagos) {
                         schema += " http://www.sat.gob.mx/Pagos http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos10.xsd";
+                    } else if (o instanceof mx.bigdata.sat.common.donat11.schema.Donatarias) {
+                    	schema += " http://www.sat.gob.mx/donat http://www.sat.gob.mx/sitio_internet/cfd/donat/donat11.xsd";
                     } else {
                         System.out.println("El complemento " + o.getClass() + " aún no ha sido declarado.");
                     }
