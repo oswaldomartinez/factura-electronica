@@ -119,7 +119,7 @@ public final class CFDv33 implements CFDI33 {
 
     private final JAXBContext context;
 
-    public static final ImmutableMap<String, String> PREFIXES = ImmutableMap.of("http://www.w3.org/2001/XMLSchema-instance", "xsi", "http://www.sat.gob.mx/cfd/3", "cfdi", "http://www.sat.gob.mx/TimbreFiscalDigital", "tfd", "http://www.sat.gob.mx/Pagos", "pagos10");
+    public static final ImmutableMap<String, String> PREFIXES = ImmutableMap.of("http://www.w3.org/2001/XMLSchema-instance", "xsi", "http://www.sat.gob.mx/cfd/3", "cfdi", "http://www.sat.gob.mx/TimbreFiscalDigital", "tfd", "http://www.sat.gob.mx/Pagos", "pago10");
 
     private final Map<String, String> localPrefixes = Maps.newHashMap(PREFIXES);
 
