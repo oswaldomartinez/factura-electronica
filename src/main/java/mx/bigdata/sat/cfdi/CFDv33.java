@@ -249,7 +249,9 @@ public final class CFDv33 implements CFDI33 {
     //Se deben agregar todos los complementos en todas sus versiones (tambien a todas las versiones de CFDi según sus complementos)
     private String getSchemaLocation() throws Exception {
         List<String> contexts = new ArrayList<>();
-        String schema = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd";
+        String schema = "http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd"
+              + " http://www.sat.gob.mx/Pagos http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos10.xsd"
+              + " http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd";
         if (document != null && document.getComplemento() != null && document.getComplemento().size() > 0) {
             for (int i=0; i < document.getComplemento().size(); i++) {
                 for (Object o : document.getComplemento().get(i).getAny()) {
@@ -261,8 +263,8 @@ public final class CFDv33 implements CFDI33 {
                         schema += " http://www.sat.gob.mx/aerolineas http://www.sat.gob.mx/sitio_internet/cfd/aerolineas/aerolineas.xsd";
                     } else if (o instanceof mx.bigdata.sat.common.ine.schema.INE) {
                         schema += " http://www.sat.gob.mx/ine http://www.sat.gob.mx/sitio_internet/cfd/ine/ine11.xsd";
-                    } else if (o instanceof mx.bigdata.sat.cfdi.v33.schema.Pagos) {
-                        schema += " http://www.sat.gob.mx/Pagos http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos10.xsd";
+//                    } else if (o instanceof mx.bigdata.sat.cfdi.v33.schema.Pagos) {
+//                        schema += " http://www.sat.gob.mx/Pagos http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos10.xsd";
                     } else if (o instanceof mx.bigdata.sat.common.donat11.schema.Donatarias) {
                     	schema += " http://www.sat.gob.mx/donat http://www.sat.gob.mx/sitio_internet/cfd/donat/donat11.xsd";
                     } else {
